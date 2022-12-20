@@ -10,19 +10,11 @@ namespace host
     {
         static int DefaultPrimitiveDepth = 1;
 
-        // See:
-        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
-        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth)
+        // Configure depth counting:
+        // Count every relevant primitive in the depth metric.
+        // By default only T primitives are counted, i.e. the depth is T-depth.
+        static void SetConfigDepth(QCTraceSimulatorConfiguration config)
         {
-            var config = new QCTraceSimulatorConfiguration();
-            config.UseWidthCounter = true;
-            config.UseDepthCounter = true;
-
-            config.OptimizeDepth = optimizeDepth;
-
-            // Configure depth counting:
-            // Count every relevant primitive in the depth metric.
-            // By default only T primitives are counted, i.e. the depth is T-depth.
             foreach (var primitive in Enum.GetNames<PrimitiveOperationsGroups>())
             {
                 config.TraceGateTimes[Enum.Parse<PrimitiveOperationsGroups>(primitive)] =
@@ -34,6 +26,17 @@ namespace host
             {
                 Console.WriteLine(kvp);
             }
+        }
+
+        // See:
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
+        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth)
+        {
+            var config = new QCTraceSimulatorConfiguration();
+            config.OptimizeDepth = optimizeDepth;
+            config.UseWidthCounter = true;
+            config.UseDepthCounter = true;
+            SetConfigDepth(config);
             return config;
         }
 
