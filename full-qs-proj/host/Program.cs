@@ -1,10 +1,15 @@
-﻿namespace full_proj_host
+﻿using Microsoft.Quantum.Simulation.Simulators;
+using quantum;  // The quantum library in Q#
+
+namespace full_proj_host
 {
     static class Program
     {
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
-          Console.WriteLine("Hello, World!");
+          using var sim = new QuantumSimulator();
+          var result = await quantum.HelloQ.Run(sim);
+          Console.WriteLine($"Simulation result: {result}");
         }
     }
 }
