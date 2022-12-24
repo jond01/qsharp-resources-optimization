@@ -2,11 +2,11 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators;
-using Quantum.ResourcesTest;
+using Quantum.ResourcesTutorial;
 
 namespace host
 {
-    static class Program
+    static class ResourcesProgram
     {
         static int DefaultPrimitiveDepth = 1;
 
@@ -21,21 +21,19 @@ namespace host
                 DefaultPrimitiveDepth;
             }
 
-            Console.WriteLine("Primitives depth:");
-            foreach (var kvp in config.TraceGateTimes)
-            {
-                Console.WriteLine(kvp);
-            }
+
         }
 
         // See:
         // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
-        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth)
+        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth, bool enableRestrictedReuse = false)
         {
             var config = new QCTraceSimulatorConfiguration();
             config.OptimizeDepth = optimizeDepth;
             config.UseWidthCounter = true;
             config.UseDepthCounter = true;
+            config.UsePrimitiveOperationsCounter = true;
+            config.EnableRestrictedReuse = enableRestrictedReuse;
             SetConfigDepth(config);
             return config;
         }
@@ -44,8 +42,12 @@ namespace host
         // https://docs.microsoft.com/en-us/azure/quantum/machines/qc-trace-simulator/width-counter
         static async Task Main(string[] args)
         {
-            var optimizeDepthSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: true));
-            var encourageReuseSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: false));
+            var optimizeDepthSimulator = new QCTraceSimulator(
+                GetConfig(optimizeDepth: true, enableRestrictedReuse: false)
+            );
+            var encourageReuseSimulator = new QCTraceSimulator(
+                GetConfig(optimizeDepth: false, enableRestrictedReuse: false)
+            );
 
             await Task.WhenAll(
                 SayHello.Run(optimizeDepthSimulator),
@@ -58,6 +60,9 @@ namespace host
                 double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
                 Console.WriteLine(sim.Name);
                 Console.WriteLine($"Depth: {depth}, width: {width}.");
+                string csvSummary = sim.ToCSV()[MetricsCountersNames.widthCounter];
+                string optimizeDepth = sim.GetConfigurationCopy().OptimizeDepth.ToString();
+                System.IO.File.WriteAllText($"data/optimizeDepth={optimizeDepth}.csv", csvSummary);
             }
         }
     }
