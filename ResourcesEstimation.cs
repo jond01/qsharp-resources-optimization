@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators;
 using Quantum.ResourcesTutorial;
 
@@ -37,14 +38,24 @@ namespace Host
         // https://docs.microsoft.com/en-us/azure/quantum/machines/qc-trace-simulator/width-counter
         static async Task Main(string[] args)
         {
-            var sim = new QCTraceSimulator(GetConfig());
-            await SayHello.Run(sim);
+            var optimizeDepthSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: true));
+            var encourageReuseSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: false));
 
-            double depth = sim.GetMetric<SayHello>(MetricsNames.DepthCounter.Depth);
-            double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
+            await Task.WhenAll(
+                SayHello.Run(optimizeDepthSimulator),
+                SayHello.Run(encourageReuseSimulator)
+            );
 
-            Console.WriteLine(sim.Name);
-            Console.WriteLine($"Depth: {depth}, width: {width}.");
+            foreach (var sim in new List<QCTraceSimulator> { optimizeDepthSimulator, encourageReuseSimulator })
+            {
+                double depth = sim.GetMetric<SayHello>(MetricsNames.DepthCounter.Depth);
+                double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
+                Console.WriteLine(sim.Name);
+                Console.WriteLine($"Depth: {depth}, width: {width}.");
+                string csvSummary = sim.ToCSV()[MetricsCountersNames.widthCounter];
+                string optimizeDepth = sim.GetConfigurationCopy().OptimizeDepth.ToString();
+                System.IO.File.WriteAllText($"data/optimizeDepth={optimizeDepth}.csv", csvSummary);
+            }
         }
     }
 }
