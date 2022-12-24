@@ -23,12 +23,13 @@ namespace Host
 
         // See:
         // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
-        static QCTraceSimulatorConfiguration GetConfig()
+        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth = false)
         {
             var config = new QCTraceSimulatorConfiguration();
             config.UseWidthCounter = true;
             config.UseDepthCounter = true;
             SetPrimitiveTimes(config);
+            config.OptimizeDepth = optimizeDepth;
             return config;
         }
 
