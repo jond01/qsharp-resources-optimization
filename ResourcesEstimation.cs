@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators;
 using Quantum.ResourcesTutorial;
 
-namespace host
+namespace Host
 {
     static class ResourcesProgram
     {
