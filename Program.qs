@@ -8,11 +8,11 @@ namespace Quantum.ResourcesTutorial {
         use summands2 = Qubit[3];
         use target1 = Qubit();
         use target2 = Qubit();
-        ApplyOp1(summands1, target1);
-        ApplyOp1(summands2, target2);
+        ApplyOp(summands1, target1);
+        ApplyOp(summands2, target2);
     }
 
-    operation ApplyOp1(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
+    operation ApplyOp(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
         use aux = Qubit();
         CX(summands[0], target);
         within {
