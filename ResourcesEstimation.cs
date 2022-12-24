@@ -7,20 +7,23 @@ namespace Host
 {
     static class ResourcesProgram
     {
-        static int DefaultPrimitiveDepth = 1;
+        static int DefaultPrimitiveTime = 1;
 
         // Configure depth counting:
         // Count every relevant primitive in the depth metric.
         // By default only T primitives are counted, i.e. the depth is T-depth.
-        static void SetConfigDepth(QCTraceSimulatorConfiguration config)
+        static void SetPrimitiveTimes(QCTraceSimulatorConfiguration config)
         {
             foreach (var primitive in Enum.GetNames<PrimitiveOperationsGroups>())
             {
                 config.TraceGateTimes[Enum.Parse<PrimitiveOperationsGroups>(primitive)] =
-                DefaultPrimitiveDepth;
+                DefaultPrimitiveTime;
             }
-
-
+            Console.WriteLine("Primitive times:");
+            foreach (var kvp in config.TraceGateTimes)
+            {
+                Console.WriteLine(kvp);
+            }
         }
 
         // See:
@@ -30,6 +33,7 @@ namespace Host
             var config = new QCTraceSimulatorConfiguration();
             config.UseWidthCounter = true;
             config.UseDepthCounter = true;
+            SetPrimitiveTimes(config);
             return config;
         }
 
