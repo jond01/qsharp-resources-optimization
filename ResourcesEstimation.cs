@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators;
 using Quantum.ResourcesTutorial;
 
@@ -26,15 +25,11 @@ namespace Host
 
         // See:
         // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
-        static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth, bool enableRestrictedReuse = false)
+        static QCTraceSimulatorConfiguration GetConfig()
         {
             var config = new QCTraceSimulatorConfiguration();
-            config.OptimizeDepth = optimizeDepth;
             config.UseWidthCounter = true;
             config.UseDepthCounter = true;
-            config.UsePrimitiveOperationsCounter = true;
-            config.EnableRestrictedReuse = enableRestrictedReuse;
-            SetConfigDepth(config);
             return config;
         }
 
@@ -42,28 +37,14 @@ namespace Host
         // https://docs.microsoft.com/en-us/azure/quantum/machines/qc-trace-simulator/width-counter
         static async Task Main(string[] args)
         {
-            var optimizeDepthSimulator = new QCTraceSimulator(
-                GetConfig(optimizeDepth: true, enableRestrictedReuse: false)
-            );
-            var encourageReuseSimulator = new QCTraceSimulator(
-                GetConfig(optimizeDepth: false, enableRestrictedReuse: false)
-            );
+            var sim = new QCTraceSimulator(GetConfig());
+            await SayHello.Run(sim);
 
-            await Task.WhenAll(
-                SayHello.Run(optimizeDepthSimulator),
-                SayHello.Run(encourageReuseSimulator)
-            );
+            double depth = sim.GetMetric<SayHello>(MetricsNames.DepthCounter.Depth);
+            double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
 
-            foreach (var sim in new List<QCTraceSimulator> { optimizeDepthSimulator, encourageReuseSimulator })
-            {
-                double depth = sim.GetMetric<SayHello>(MetricsNames.DepthCounter.Depth);
-                double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
-                Console.WriteLine(sim.Name);
-                Console.WriteLine($"Depth: {depth}, width: {width}.");
-                string csvSummary = sim.ToCSV()[MetricsCountersNames.widthCounter];
-                string optimizeDepth = sim.GetConfigurationCopy().OptimizeDepth.ToString();
-                System.IO.File.WriteAllText($"data/optimizeDepth={optimizeDepth}.csv", csvSummary);
-            }
+            Console.WriteLine(sim.Name);
+            Console.WriteLine($"Depth: {depth}, width: {width}.");
         }
     }
 }
