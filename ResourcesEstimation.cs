@@ -12,7 +12,7 @@ namespace Host
 
         // Configure depth counting:
         // Count every relevant primitive in the depth metric.
-        // By default only T primitives are counted, i.e. the depth is T-depth.
+        // By default, only T primitives are counted, i.e. the depth is T-depth.
         static void SetPrimitiveTimes(QCTraceSimulatorConfiguration config)
         {
             foreach (var primitive in Enum.GetNames<PrimitiveOperationsGroups>())
@@ -23,7 +23,7 @@ namespace Host
         }
 
         // See:
-        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration
+        // https://learn.microsoft.com/en-us/dotnet/api/microsoft.quantum.simulation.simulators.qctracesimulators.qctracesimulatorconfiguration?view=quantum-dotnet-latest
         static QCTraceSimulatorConfiguration GetConfig(bool optimizeDepth = false)
         {
             var config = new QCTraceSimulatorConfiguration();
@@ -35,7 +35,7 @@ namespace Host
         }
 
         // See:
-        // https://docs.microsoft.com/en-us/azure/quantum/machines/qc-trace-simulator/width-counter
+        // https://learn.microsoft.com/en-us/azure/quantum/machines/qc-trace-simulator/
         static async Task Main(string[] args)
         {
             var optimizeDepthSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: true));
