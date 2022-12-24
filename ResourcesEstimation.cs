@@ -19,11 +19,6 @@ namespace Host
                 config.TraceGateTimes[Enum.Parse<PrimitiveOperationsGroups>(primitive)] =
                 DefaultPrimitiveTime;
             }
-            Console.WriteLine("Primitive times:");
-            foreach (var kvp in config.TraceGateTimes)
-            {
-                Console.WriteLine(kvp);
-            }
         }
 
         // See:
