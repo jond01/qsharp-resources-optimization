@@ -25,7 +25,11 @@ namespace Quantum.ResourcesTutorial {
                     }
                 }
             } apply {
-                Controlled X(qubits, aux);
+                for i in 0..Length(qubits) - 1 {
+                    if (i % 2 == 1) {
+                        CNOT(qubits[i], aux);
+                    }
+                }
             }
         }
     }
