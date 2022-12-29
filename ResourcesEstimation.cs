@@ -42,14 +42,14 @@ namespace Host
             var encourageReuseSimulator = new QCTraceSimulator(GetConfig(optimizeDepth: false));
 
             await Task.WhenAll(
-                ApplyOracles.Run(optimizeDepthSimulator),
-                ApplyOracles.Run(encourageReuseSimulator)
+                SayHello.Run(optimizeDepthSimulator),
+                SayHello.Run(encourageReuseSimulator)
             );
 
             foreach (var sim in new List<QCTraceSimulator> { optimizeDepthSimulator, encourageReuseSimulator })
             {
-                double depth = sim.GetMetric<ApplyOracles>(MetricsNames.DepthCounter.Depth);
-                double width = sim.GetMetric<ApplyOracles>(MetricsNames.WidthCounter.ExtraWidth);
+                double depth = sim.GetMetric<SayHello>(MetricsNames.DepthCounter.Depth);
+                double width = sim.GetMetric<SayHello>(MetricsNames.WidthCounter.ExtraWidth);
                 Console.WriteLine(sim.Name);
                 Console.WriteLine($"Depth: {depth}, width: {width}.");
                 string csvSummary = sim.ToCSV()[MetricsCountersNames.widthCounter];
