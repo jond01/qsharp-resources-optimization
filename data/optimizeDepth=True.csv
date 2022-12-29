@@ -2,8 +2,8 @@ Name	Variant	Caller	CallerVariant	Count	InputWidth:Average	InputWidth:SecondMome
 Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Implementation.Interface_CX	Body	Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Circuits.InternalCX	Body	12	2	4	0	24	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Circuits.InternalCX	Body	Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Circuits.X	Controlled	12	2	4	0	24	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Circuits.X	Controlled	Microsoft.Quantum.Canon.CX	Body	8	2	4	0	16	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Microsoft.Quantum.Canon.CX	Body	Quantum.ResourcesTutorial.ApplyOp1	Body	8	2	4	0	16	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Microsoft.Quantum.Canon.CX	Body	Quantum.ResourcesTutorial.SumQubits	Body	8	2	4	0	16	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.Circuits.X	Controlled	Microsoft.Quantum.Canon.CX	Adjoint	4	2	4	0	8	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Microsoft.Quantum.Canon.CX	Adjoint	Quantum.ResourcesTutorial.ApplyOp1	Body	4	2	4	0	8	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Quantum.ResourcesTutorial.ApplyOp1	Body	Quantum.ResourcesTutorial.SayHello	Body	2	4	16	0	8	4	4	1	1	0	2	1	1	0	0	0	0	0	0	0	0	0	0	0	0
-Quantum.ResourcesTutorial.SayHello	Body	[[root]]	Body	1	0	0	NaN	0	0	0	9	81	NaN	9	9	9	0	0	NaN	0	0	0	0	0	NaN	0	0	0
+Microsoft.Quantum.Canon.CX	Adjoint	Quantum.ResourcesTutorial.SumQubits	Body	4	2	4	0	8	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Quantum.ResourcesTutorial.SumQubits	Body	Quantum.ResourcesTutorial.QuantumOperation	Body	2	4	16	0	8	4	4	1	1	0	2	1	1	0	0	0	0	0	0	0	0	0	0	0	0
+Quantum.ResourcesTutorial.QuantumOperation	Body	[[root]]	Body	1	0	0	NaN	0	0	0	9	81	NaN	9	9	9	0	0	NaN	0	0	0	0	0	NaN	0	0	0
