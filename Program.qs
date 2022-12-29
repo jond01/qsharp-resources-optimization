@@ -3,24 +3,30 @@ namespace Quantum.ResourcesTutorial {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
 
-    operation SayHello() : Unit {
-        use summands1 = Qubit[3];
-        use summands2 = Qubit[3];
-        use target1 = Qubit();
-        use target2 = Qubit();
-        ApplyOp(summands1, target1);
-        ApplyOp(summands2, target2);
+    operation ApplyOracles() : Unit {
+        let numQubits = 3;
+        use (qubits1, qubits2) = (Qubit[numQubits], Qubit[numQubits]);
+        ApplyZebraOracle(qubits1);
+        ApplyZebraOracle(qubits2);
     }
 
-    operation ApplyOp(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
+    operation ApplyZebraOracle(qubits : Qubit[]) : Unit is Adj + Ctl {
         use aux = Qubit();
-        CX(summands[0], target);
         within {
-            for i in 1..Length(summands) - 1 {
-                CX(summands[i], aux);
-            }
+            // Prepare |-1⟩ state in aux
+            X(aux);
+            H(aux);
         } apply {
-            CX(aux, target);
+            // Phase kickback
+            within {
+                for i in 0..Length(qubits) - 1 {
+                    if (i % 2 == 0) {
+                        X(qubits[i]);
+                    }
+                }
+            } apply {
+                Controlled X(qubits, aux);
+            }
         }
     }
 }
