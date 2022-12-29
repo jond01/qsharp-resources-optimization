@@ -13,13 +13,13 @@ namespace Quantum.ResourcesTutorial {
 
     operation SumQubits(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
         use aux = Qubit();
-        CX(summands[0], target);
+        CNOT(summands[0], target);
         within {
             for i in 1..Length(summands) - 1 {
-                CX(summands[i], aux);
+                CNOT(summands[i], aux);
             }
         } apply {
-            CX(aux, target);
+            CNOT(aux, target);
         }
     }
 }
