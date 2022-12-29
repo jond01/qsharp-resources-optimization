@@ -3,16 +3,15 @@ namespace Quantum.ResourcesTutorial {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
 
-    operation SayHello() : Unit {
-        use summands1 = Qubit[3];
-        use summands2 = Qubit[3];
-        use target1 = Qubit();
-        use target2 = Qubit();
-        ApplyOp(summands1, target1);
-        ApplyOp(summands2, target2);
+    operation QuantumOperation() : Unit {
+        let numSummands = 3;
+        use (summands1, summands2) = (Qubit[numSummands], Qubit[numSummands]);
+        use (target1, target2) = (Qubit(), Qubit());
+        SumQubits(summands1, target1);
+        SumQubits(summands2, target2);
     }
 
-    operation ApplyOp(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
+    operation SumQubits(summands : Qubit[], target : Qubit) : Unit is Adj + Ctl {
         use aux = Qubit();
         CX(summands[0], target);
         within {
